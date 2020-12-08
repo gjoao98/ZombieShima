@@ -1,0 +1,61 @@
+﻿using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+using UnityEngine.Events;
+
+public class Botao_Gate_1 : MonoBehaviour
+{
+    public bool openDoor;
+    public bool isInRange;
+    public KeyCode interactKey;
+    public UnityEvent interactAction;
+    public GameObject message;
+
+    // Start is called before the first frame update
+    void Start()
+    {
+
+    }
+
+    // Update is called once per frame
+    void Update()
+    {
+        if (isInRange)
+        {
+            if (!openDoor)
+            {
+                if (Input.GetKey(interactKey))
+                {
+                    interactAction.Invoke();
+                }
+            }
+        }
+    }
+
+    public void OpenDoor()
+    {
+        if (!openDoor)
+        {
+            openDoor = true;
+        }
+    }
+    private void OnTriggerEnter(Collider collision)
+    {
+        if (collision.gameObject.CompareTag("Player"))
+        {
+            isInRange = true;
+            message.SetActive(true);
+            Debug.Log("Player is On Trigger now");
+        }
+    }
+
+    private void OnTriggerExit(Collider collision)
+    {
+        if (collision.gameObject.CompareTag("Player"))
+        {
+            isInRange = false;
+            message.SetActive(false);
+            Debug.Log("Player is not On Trigger now");
+        }
+    }
+}
